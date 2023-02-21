@@ -2,7 +2,7 @@ import argparse
 import binascii
 import io
 
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, redirect
 from werkzeug.exceptions import BadRequest
 
 import warn_old_config
@@ -118,7 +118,7 @@ def _internal_sdm(with_tt=False, force_json=False):
                                   sdmmac=sdmmac_b,
                                   enc_file_data=enc_file_data_b)
     except InvalidMessage:
-        raise BadRequest("Invalid message (most probably wrong signature).")
+        return redirect("https://pbt-demo.whydah.xyz/not-genuine", code=302) #raise BadRequest("Invalid message (most probably wrong signature).")
 
     if REQUIRE_LRP and res['encryption_mode'] != EncMode.LRP:
         raise BadRequest("Invalid encryption mode, expected LRP.")
@@ -181,15 +181,17 @@ def _internal_sdm(with_tt=False, force_json=False):
             "enc_mode": encryption_mode
         })
     else:
-        return render_template('sdm_info.html',
-                               encryption_mode=encryption_mode,
-                               picc_data_tag=picc_data_tag,
-                               uid=uid,
-                               read_ctr_num=read_ctr_num,
-                               file_data=file_data,
-                               file_data_utf8=file_data_utf8,
-                               tt_status=tt_status,
-                               tt_color=tt_color)
+      return redirect("https://pbt-demo.whydah.xyz/product", code=302)
+
+        # return render_template('sdm_info.html',
+        #                        encryption_mode=encryption_mode,
+        #                        picc_data_tag=picc_data_tag,
+        #                        uid=uid,
+        #                        read_ctr_num=read_ctr_num,
+        #                        file_data=file_data,
+        #                        file_data_utf8=file_data_utf8,
+        #                        tt_status=tt_status,
+        #                        tt_color=tt_color)
 
 
 @app.route('/tagtt')
