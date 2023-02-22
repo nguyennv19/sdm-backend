@@ -181,7 +181,7 @@ def _internal_sdm(with_tt=False, force_json=False):
             "enc_mode": encryption_mode
         })
     else:
-      return redirect("https://pbt-demo.whydah.xyz/product", code=302)
+      return redirect("https://pbt-demo.whydah.xyz/product/scan", code=302)
 
         # return render_template('sdm_info.html',
         #                        encryption_mode=encryption_mode,
